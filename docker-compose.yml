@@ -1,0 +1,20 @@
+version: '3.7'
+
+services:
+  mongos:
+    image: mongo
+    volumes:
+      - .data/mongo:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: oliveira
+      MONGO_INITDB_ROOT_PASSWORD: oliveira1234
+
+  app:
+    image: node:10.16.3-alpine
+    volumes:
+      - ./:/app
+    working_dir: /app
+    command: yarn dev
+    environment:
+      MONGO_USERNAME: oliveira
+      MONGO_PASSWORD: oliveira1234
