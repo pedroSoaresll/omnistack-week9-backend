@@ -5,9 +5,14 @@ services:
     image: mongo
     volumes:
       - .data/mongo:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    ports:
+      - 27017:27017
     environment:
       MONGO_INITDB_ROOT_USERNAME: oliveira
       MONGO_INITDB_ROOT_PASSWORD: oliveira1234
+      MONGO_INITDB_DATABASE: omnistack-oliveira
+    network_mode: 'host'
 
   app:
     image: node:10.16.3-alpine
@@ -15,6 +20,14 @@ services:
       - ./:/app
     working_dir: /app
     command: yarn dev
+    ports:
+      - 3333:3333
     environment:
-      MONGO_USERNAME: oliveira
-      MONGO_PASSWORD: oliveira1234
+      MONGO_DATABASE: omnistack-oliveira
+      MONGO_ADMIN_USERNAME: oliveira
+      MONGO_ADMIN_PASSWORD: oliveira1234
+      MONGO_HOST: localhost
+      MONGO_PORT: 27017
+    network_mode: 'host'
+    depends_on:
+      - mongos
