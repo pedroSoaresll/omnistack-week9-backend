@@ -19,10 +19,31 @@ Após o passo acima, certifique-se de que tenha o docker e docker-compose instal
 Depois você deverá conectar ao mongo e criar um database chamado
 > omnistack-oliveira
 
-Depois disso vem o ultimo passo, rodar o comando abaixo:
+Para isso, inicie o docker (e não se preocupe se o container app_1 emitir erro)
 ```
 $ sudo docker-compose up
 ```
+
+Depois utilize algum cliente para mongodb, por exemplo: [Robot3T](https://robomongo.org/download)
+
+No Robot3T realize as seguintes operações para conexão:
+1. Na aba **Connection** faça:
+  - type = Direct Connection
+  - name = Mongo Localhost
+  - address = localhost
+  - port = 27017
+
+2. Na Aba **Authentication** faça:
+  - Habilite a opção = Perform authentication
+  - Database = admin
+  - User name = oliveira
+  - Password = oliveira1234
+  - Auth Mechanism = SCRAM-SHA-1
+3. Realize a conexão
+4. Clique com o botão direito no nome da sua conexão **"Mongo Localhost"** e clique em Create database
+5. Dê o nome de omnistack-oliveira
+6. Pronto!
+
 
 ### Atenção
 > Pode ser que a primeira vez que vc rodar o docker-compose a aplicação não consiga se conectar. (não implementei retry para conexão com o mongo) mas facilmente você pode rodar o comando abaixo
