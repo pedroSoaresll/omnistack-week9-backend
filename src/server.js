@@ -12,10 +12,18 @@ const mongoAdminUsername = process.env.MONGO_ADMIN_USERNAME;
 const mongoAdminPassword = process.env.MONGO_ADMIN_PASSWORD;
 const mongoDatabase = process.env.MONGO_DATABASE;
 
-mongoose.connect(`mongodb://${mongoAdminUsername}:${mongoAdminPassword}@${mongoHost}:${mongoPort}/${mongoDatabase}`, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+var connectWithRetry = function () {
+  let timer = 0;
+
+  return mongoose.connect(`mongodb://${mongoAdminUsername}:${mongoAdminPassword}@${mongoHost}:${mongoPort}/${mongoDatabase}`, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+    .then(() => clearTimeout(timer))
+    .catch(() => timer = setTimeout(() => connectWithRetry(), 500));
+};
+connectWithRetry();
+
 
 app.use(cors());
 app.use(express.json());

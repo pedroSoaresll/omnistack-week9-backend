@@ -2,7 +2,6 @@ version: '3.7'
 
 services:
   mongos:
-    container_name: mongos
     image: mongo
     volumes:
       - .data/mongo:/data/db
@@ -13,11 +12,10 @@ services:
       MONGO_INITDB_ROOT_USERNAME: oliveira
       MONGO_INITDB_ROOT_PASSWORD: oliveira1234
       MONGO_INITDB_DATABASE: omnistack-oliveira
-    network_mode: 'bridge'
+    network_mode: 'host'
 
   app:
     image: node:10.16.3-alpine
-    container_name: app
     volumes:
       - ./:/app
     working_dir: /app
@@ -28,10 +26,8 @@ services:
       MONGO_DATABASE: omnistack-oliveira
       MONGO_ADMIN_USERNAME: oliveira
       MONGO_ADMIN_PASSWORD: oliveira1234
-      MONGO_HOST: mongos
+      MONGO_HOST: localhost
       MONGO_PORT: 27017
-    network_mode: 'bridge'
+    network_mode: 'host'
     depends_on:
-      - mongos
-    links: 
       - mongos
